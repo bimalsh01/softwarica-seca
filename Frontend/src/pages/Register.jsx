@@ -1,5 +1,6 @@
 import React, {useState} from 'react'
 import Navbar from '../components/Navbar'
+import { createUserApi, testApi } from '../apis/Api'
 
 const Register = () => {
   // useState (Setting input value)
@@ -30,6 +31,24 @@ const Register = () => {
     e.preventDefault()
     // check if input value is available
     console.log(firstName, lastName, email, password)
+
+    // making json data object
+    const data = {
+      firstName : firstName,
+      lastName : lastName,
+      email : email,
+      password : password
+    }
+
+    // making API Call
+    createUserApi(data).then((res) => {
+
+    }).catch(err => {
+      console.log(err.message)
+    })
+
+
+
   }
 
   return (

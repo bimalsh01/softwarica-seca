@@ -8,4 +8,8 @@ const Api = axios.create({
     }
 })
 
-export const testApi = Api.get("/test")
+export const testApi = () => Api.get("/test")
+// http://localhost:5000/test
+
+// create user api
+export const createUserApi = (data) => Api.post('/api/user/create', data)
