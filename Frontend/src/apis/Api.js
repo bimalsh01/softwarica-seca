@@ -13,3 +13,6 @@ export const testApi = () => Api.get("/test")
 
 // create user api
 export const createUserApi = (data) => Api.post('/api/user/create', data)
+
+// Login user Api
+export const loginUserApi = (data) =>  Api.post('/api/user/login', data)

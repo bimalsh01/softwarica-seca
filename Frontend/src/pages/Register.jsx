@@ -1,6 +1,7 @@
 import React, {useState} from 'react'
 import Navbar from '../components/Navbar'
 import { createUserApi, testApi } from '../apis/Api'
+import { toast } from 'react-toastify'
 
 const Register = () => {
   // useState (Setting input value)
@@ -42,8 +43,13 @@ const Register = () => {
 
     // making API Call
     createUserApi(data).then((res) => {
-
+      if(res.data.success == false){
+        toast.error(res.data.message)
+      } else {
+        toast.success(res.data.message)
+      }
     }).catch(err => {
+      toast.error("Server Error")
       console.log(err.message)
     })
 
