@@ -1,6 +1,53 @@
-import React from 'react'
+import React, {useState} from 'react'
+import { createProductApi } from '../../apis/Api'
+import { toast } from 'react-toastify'
 
 const AdminDashboard = () => {
+
+    // make useState
+    const [productName, setProductName] = useState('')
+    const [productPrice, setProductPrice] = useState('')
+    const [productCategory, setProductCategory] = useState('')
+    const [productDescription, setProductDescription] = useState('')
+
+    // Make useState for image
+    const [productImage, setProductImage] = useState(null)
+    const [previewImage, setPreviewImage] = useState(null)
+
+    // Function for image upload and preview\
+    const handleImageUpload = (event) => {
+        const file = event.target.files[0]
+        setProductImage(file)
+        setPreviewImage(URL.createObjectURL(file))
+    }
+
+    // handle submit
+    const handleSubmit = (e) => {
+        e.preventDefault()
+
+        // Making logical form data
+        const formData = new FormData()
+        formData.append('productName',productName)
+        formData.append('productPrice',productPrice)
+        formData.append('productCategory',productCategory)
+        formData.append('productDescription',productDescription)
+        formData.append('productImage',productImage)
+
+        // Making API Call
+        createProductApi(formData).then((res) => {
+            if(res.data.success == false){
+                toast.error(res.data.message)
+            } else{
+                toast.success(res.data.message)
+            }
+        }).catch(err => {
+            toast.error("Server Error")
+            console.log(err.message)
+        })
+        
+    }
+
+
     return (
         <>
             <div className='m-4'>
@@ -22,31 +69,34 @@ const AdminDashboard = () => {
                                 <div className="modal-body">
                                     <form>
                                         <label>Product Name</label>
-                                        <input type="text" className='form-control mb-2' placeholder='Enter product name' />
+                                        <input onChange={(e) => setProductName(e.target.value)} type="text" className='form-control mb-2' placeholder='Enter product name' />
 
                                         <label>Product Price</label>
-                                        <input type="number" className='form-control mb-2' placeholder='Enter product price' />
+                                        <input onChange={(e) => setProductPrice(e.target.value)} type="number" className='form-control mb-2' placeholder='Enter product price' />
 
                                         <label>Product Category</label>
-                                        <select className='form-control mb-2'>
+                                        <select onChange={(e) => setProductCategory(e.target.value)} className='form-control mb-2'>
                                             <option value="Flower">Flower</option>
                                             <option value="Cake">Cake</option>
                                             <option value="Gift">Gift</option>
                                         </select>
 
                                         <label>Product Description</label>
-                                        <textarea name="" id="" cols="3" rows="3" className='form-control' placeholder='Enter description'></textarea>
+                                        <textarea onChange={(e) => setProductDescription(e.target.value)} name="" id="" cols="3" rows="3" className='form-control' placeholder='Enter description'></textarea>
 
                                         <label>Product Image</label>
-                                        <input type="file" className='form-control mb-2' />
-
+                                        <input onChange={handleImageUpload} type="file" className='form-control mb-2' />
+                                        
+                                        {
+                                            previewImage && <img src={previewImage} className='img-fluid rounded object-fit-cover' alt="product Image" />
+                                        }
                                         
 
                                     </form>
                                 </div>
                                 <div className="modal-footer">
                                     <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                    <button type="button" className="btn btn-primary">Save changes</button>
+                                    <button onClick={handleSubmit} type="button" className="btn btn-primary">Save changes</button>
                                 </div>
                             </div>
                         </div>

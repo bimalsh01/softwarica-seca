@@ -3,6 +3,8 @@ const express = require('express');
 const dotenv = require('dotenv');
 const connectDB = require('./database/db');
 const cors = require('cors');
+const multiparty = require('connect-multiparty')
+const cloudinary = require('cloudinary');
 
 // Making express app
 const app = express();
@@ -17,6 +19,17 @@ const corsPolicy = {
     optionSuccessStatus : 200,   
 }
 app.use(cors(corsPolicy))
+
+// multiparty middleware
+app.use(multiparty())
+
+// cloudinary config
+          
+cloudinary.config({ 
+  cloud_name: 'dvjjbmlsg', 
+  api_key: '228794781863152', 
+  api_secret: '6Wbr7jzMDkr7e44xue_nXfXQ42k' 
+});
 
 // mongodb connection
 connectDB();
@@ -37,6 +50,7 @@ app.use('/api/user', require('./routes/userRoutes'))
 // http://localhost:5000/api/user/login
 
 // CREATE A ROUTE FOR PRODUCTS
+app.use('/api/product', require('./routes/productRoutes'))
 
 
 // defining port
