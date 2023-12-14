@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { loginUserApi } from '../apis/Api'
 import { toast } from 'react-toastify'
+import { useNavigate } from 'react-router-dom'
 
 const Login = () => {
     const[email, setEmail] = useState('')
@@ -25,6 +26,7 @@ const Login = () => {
         // } else {
         //     toast.error("Server Error")
         // }
+        const navigate = useNavigate()
 
         loginUserApi(data).then((res) => {
             if(res.data.success == false){
@@ -33,6 +35,7 @@ const Login = () => {
                 toast.success(res.data.message)
                 // set token and user data in local storage
                 localStorage.setItem('token',res.data.token)
+        navigate('/admin/dashboard')
 
                 // set user data 
                 const jsonDecode = JSON.stringify(res.data.userData)

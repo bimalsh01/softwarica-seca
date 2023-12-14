@@ -1,5 +1,5 @@
-import React, {useState} from 'react'
-import { createProductApi } from '../../apis/Api'
+import React, { useState, useEffect } from 'react'
+import { createProductApi, getAllProductsApi } from '../../apis/Api'
 import { toast } from 'react-toastify'
 
 const AdminDashboard = () => {
@@ -14,6 +14,14 @@ const AdminDashboard = () => {
     const [productImage, setProductImage] = useState(null)
     const [previewImage, setPreviewImage] = useState(null)
 
+    // useEffect for fetching all products and show in table
+    const [products, setProducts] = useState([])
+    useEffect(() => {
+        getAllProductsApi().then((res) => {
+            setProducts(res.data.products)
+        })
+    }, [])
+
     // Function for image upload and preview\
     const handleImageUpload = (event) => {
         const file = event.target.files[0]
@@ -27,24 +35,24 @@ const AdminDashboard = () => {
 
         // Making logical form data
         const formData = new FormData()
-        formData.append('productName',productName)
-        formData.append('productPrice',productPrice)
-        formData.append('productCategory',productCategory)
-        formData.append('productDescription',productDescription)
-        formData.append('productImage',productImage)
+        formData.append('productName', productName)
+        formData.append('productPrice', productPrice)
+        formData.append('productCategory', productCategory)
+        formData.append('productDescription', productDescription)
+        formData.append('productImage', productImage)
 
         // Making API Call
         createProductApi(formData).then((res) => {
-            if(res.data.success == false){
+            if (res.data.success == false) {
                 toast.error(res.data.message)
-            } else{
+            } else {
                 toast.success(res.data.message)
             }
         }).catch(err => {
             toast.error("Server Error")
             console.log(err.message)
         })
-        
+
     }
 
 
@@ -86,11 +94,11 @@ const AdminDashboard = () => {
 
                                         <label>Product Image</label>
                                         <input onChange={handleImageUpload} type="file" className='form-control mb-2' />
-                                        
+
                                         {
                                             previewImage && <img src={previewImage} className='img-fluid rounded object-fit-cover' alt="product Image" />
                                         }
-                                        
+
 
                                     </form>
                                 </div>
@@ -115,21 +123,25 @@ const AdminDashboard = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>
-                                <img src="https://th.bing.com/th/id/OIP.JPJVgSoqR2dRQ4VcsD_BsQHaEK?rs=1&pid=ImgDetMain" width={'40'} height={'40'} alt="" />
-                            </td>
-                            <td>Merigold</td>
-                            <td>360</td>
-                            <td>Flower</td>
-                            <td>Flower for decoration</td>
-                            <td>
-                                <div className='btn-group' role='group'>
-                                    <button className='btn btn-success'>Edit</button>
-                                    <button className='btn btn-danger'>Delete</button>
-                                </div>
-                            </td>
-                        </tr>
+                        {
+                            products.map((item) => (
+                                <tr>
+                                    <td>
+                                        <img src={item.productImageUrl} width={'40'} height={'40'} alt="" />
+                                    </td>
+                                    <td>{item.productName}</td>
+                                    <td>NPR.{item.productPrice}</td>
+                                    <td>{item.productCategory}</td>
+                                    <td>{item.productDescription.slice(0,10)}</td>
+                                    <td>
+                                        <div className='btn-group' role='group'>
+                                            <button className='btn btn-success'>Edit</button>
+                                            <button className='btn btn-danger'>Delete</button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            ))
+                        }
                     </tbody>
                 </table>
 
