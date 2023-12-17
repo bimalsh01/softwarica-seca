@@ -23,3 +23,6 @@ export const createProductApi = (data) => Api.post('/api/product/create_product'
 // get all products
 export const getAllProductsApi = () => Api.get('/api/product/get_products')
 
+// GET single product API
+export const getSingleProductApi = (id) => Api.get(`/api/product/get_product/${id}`)
+

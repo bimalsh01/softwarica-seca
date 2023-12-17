@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { createProductApi, getAllProductsApi } from '../../apis/Api'
 import { toast } from 'react-toastify'
+import { Link } from 'react-router-dom'
 
 const AdminDashboard = () => {
 
@@ -135,7 +136,7 @@ const AdminDashboard = () => {
                                     <td>{item.productDescription.slice(0,10)}</td>
                                     <td>
                                         <div className='btn-group' role='group'>
-                                            <button className='btn btn-success'>Edit</button>
+                                            <Link to={`/admin/edit/${item._id}`} className='btn btn-success'>Edit</Link>
                                             <button className='btn btn-danger'>Delete</button>
                                         </div>
                                     </td>
