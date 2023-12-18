@@ -1,11 +1,15 @@
 import React, { useState, useEffect } from 'react'
-import { useParams } from 'react-router-dom'
-import { getSingleProductApi } from '../../apis/Api'
+import { useNavigate, useParams } from 'react-router-dom'
+import { getSingleProductApi, updateProductApi } from '../../apis/Api'
+import { toast } from 'react-toastify'
 
 const AdminEditProduct = () => {
 
   // receive product id from url
   const {id} = useParams()
+
+  // navigator
+  const navigate = useNavigate()
 
   // use effect to fetch product details
   useEffect(() => {
@@ -40,6 +44,36 @@ const AdminEditProduct = () => {
     setPreviewImage(URL.createObjectURL(file))
   }
 
+  // make function for button
+  const handleSubmit = (e) =>{
+    e.preventDefault()
+    console.log(productName,productPrice, productCategory, productDescription)
+    console.log(productImage)
+
+    // make a form data
+    const formData = new FormData();
+    formData.append('productName', productName)
+    formData.append('productPrice', productPrice)
+    formData.append('productCategory', productCategory)
+    formData.append('productDescription', productDescription)
+    formData.append('productImage', productImage)
+
+    // Making Api Call
+    updateProductApi(id,formData).then((res) =>{
+      if(res.data.success == true){
+        toast.success(res.data.message)
+        navigate('/admin/dashboard')
+      } else{
+        toast.error(res.data.message)
+      }
+    }).catch(err =>{
+      toast.error("Server Error")
+    })
+
+
+    
+  }
+
   return (
     <>
       <h2 className='m-4'>Updating product for <span className='text-danger'>'{productName}'</span></h2>
@@ -65,7 +99,7 @@ const AdminEditProduct = () => {
             <label>Product Image</label>
             <input onChange={handleImageUpload} type="file" className='form-control mb-2' />
 
-            <button className='btn btn-primary w-100 mt-2'>Update product</button>
+            <button onClick={handleSubmit} className='btn btn-primary w-100 mt-2'>Update product</button>
 
 
           </form>

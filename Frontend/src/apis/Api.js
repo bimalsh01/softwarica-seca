@@ -26,3 +26,6 @@ export const getAllProductsApi = () => Api.get('/api/product/get_products')
 // GET single product API
 export const getSingleProductApi = (id) => Api.get(`/api/product/get_product/${id}`)
 
+// Update product API with ID
+export const updateProductApi = (id, formData) => Api.put(`/api/product/update_product/${id}`, formData)
+

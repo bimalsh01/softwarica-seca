@@ -10,6 +10,8 @@ router.get("/get_products", productController.getAllProducts)
 // Get single product API | /get_product/:id
 router.get("/get_product/:id", productController.getSingleProduct)
 
+// update product API
+router.put("/update_product/:id", productController.updateProduct)
 
 
 
