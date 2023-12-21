@@ -1,5 +1,6 @@
 const router = require('express').Router();
-const productController = require("../controllers/productcontrollers")
+const productController = require("../controllers/productcontrollers");
+const authGuard = require('../middleware/authGuard');
 
 // Create product API
 router.post('/create_product', productController.createProduct)
@@ -13,7 +14,8 @@ router.get("/get_product/:id", productController.getSingleProduct)
 // update product API
 router.put("/update_product/:id", productController.updateProduct)
 
-
+// delete product API
+router.delete("/delete_product/:id", authGuard, productController.deleteProduct)
 
 
 module.exports = router;

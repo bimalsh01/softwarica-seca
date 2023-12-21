@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom'
 const Login = () => {
     const[email, setEmail] = useState('')
     const [password, setPassword] = useState('')
+    const navigate = useNavigate()
 
     const handleSubmit = (e) => {
         e.preventDefault()
@@ -26,7 +27,6 @@ const Login = () => {
         // } else {
         //     toast.error("Server Error")
         // }
-        const navigate = useNavigate()
 
         loginUserApi(data).then((res) => {
             if(res.data.success == false){

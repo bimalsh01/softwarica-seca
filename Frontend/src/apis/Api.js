@@ -29,3 +29,6 @@ export const getSingleProductApi = (id) => Api.get(`/api/product/get_product/${i
 // Update product API with ID
 export const updateProductApi = (id, formData) => Api.put(`/api/product/update_product/${id}`, formData)
 
+// delete product API with ID
+export const deleteProductApi = (id) => Api.delete(`/api/product/delete_product/${id}`)
+
