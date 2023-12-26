@@ -9,6 +9,56 @@ const Register = () => {
   const [lastName, setLastName] = useState('')
   const [email, setEmail] = useState('')
   const [password,setPassword] = useState('')
+  const [confirmPassword, setConfirmPassword] = useState('')
+
+  // useState (Setting error message)
+  const [fnameError, setFnameError] = useState('')
+  const [lnameError, setLnameError] = useState('')
+  const [emailError, setEmailError] = useState('')
+  const [passwordError, setPasswordError] = useState('')
+  const [cpasswordError, setCpasswordError] = useState('')
+
+  // validate input value
+  const validate = () => {
+      let isValid = true
+
+      // reset error message
+      setFnameError('')
+      setLnameError('')
+      setEmailError('')
+      setPasswordError('')
+      setCpasswordError('')
+
+      if(firstName.trim() === ""){
+        setFnameError("Firstname is required")
+        isValid = false
+      }
+      if(lastName.trim() === ""){
+        setLnameError("Lastname is required")
+        isValid = false
+      }
+      if(email.trim() === ""){
+        setEmailError("Email is required")
+        isValid = false
+      }
+
+      if(password.trim() === ""){
+        setPasswordError("Password is required")
+        isValid = false
+      }
+
+      if(confirmPassword.trim() === ""){
+        setCpasswordError("Confirm Password is required")
+        isValid = false
+      }
+
+      if(password.trim() !== confirmPassword.trim()){
+        setCpasswordError("Password and Confirm Password must be same")
+        isValid = false
+      }
+
+      return isValid
+  }
 
   // function for changing input value
   const changeFirstname = (e) => {
@@ -27,11 +77,20 @@ const Register = () => {
     setPassword(e.target.value)
   }
 
+  const changeConfirmPassword = (e) => {
+    setConfirmPassword(e.target.value)
+  }
+
   // function for button
   const handleSubmit = (e) => {
     e.preventDefault()
-    // check if input value is available
-    console.log(firstName, lastName, email, password)
+
+    // validate the data
+    const isValid = validate()
+    if(!isValid){
+      return
+    }
+    
 
     // making json data object
     const data = {
@@ -65,14 +124,34 @@ const Register = () => {
         <label>Firstname</label>
         <input onChange={changeFirstname} type="text" className='form-control mb-2' placeholder='Enter your firstname' />
 
+        {
+          fnameError && <p className='text-danger'>{fnameError}</p>
+        }
+
         <label>Lastname</label>
         <input onChange={changeLastname} type="text" className='form-control mb-2' placeholder='Enter your lastname' />
+        {
+          lnameError && <p className='text-danger'>{lnameError}</p>
+        }
+
 
         <label>Email Address</label>
         <input onChange={changeEmail} type="email" className='form-control mb-2' placeholder='Enter your email' />
+        {
+          emailError && <p className='text-danger'>{emailError}</p>
+        }
 
         <label>Password</label>
         <input onChange={changePassword} type="password" className='form-control mb-2' placeholder='Enter your password' />
+        {
+          passwordError && <p className='text-danger'>{passwordError}</p>
+        }
+
+        <label>Confirm Password</label>
+        <input onChange={changeConfirmPassword} type="password" className='form-control mb-2' placeholder='Enter your password' />
+        {
+          cpasswordError && <p className='text-danger'>{cpasswordError}</p>
+        }
 
         <button onClick={handleSubmit} className='btn btn-danger w-100'>Create an Account</button>
 

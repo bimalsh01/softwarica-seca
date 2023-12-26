@@ -8,6 +8,14 @@ const Api = axios.create({
     }
 })
 
+// make seperate header for authorization
+const token = localStorage.getItem('token')
+const config = {
+    headers : {
+        'authorization' : `Bearer ${token}`
+    }
+}
+
 export const testApi = () => Api.get("/test")
 // http://localhost:5000/test
 
@@ -18,7 +26,7 @@ export const createUserApi = (data) => Api.post('/api/user/create', data)
 export const loginUserApi = (data) =>  Api.post('/api/user/login', data)
 
 // Create product API
-export const createProductApi = (data) => Api.post('/api/product/create_product', data)
+export const createProductApi = (data) => Api.post('/api/product/create_product', data, config)
 
 // get all products
 export const getAllProductsApi = () => Api.get('/api/product/get_products')
@@ -27,8 +35,8 @@ export const getAllProductsApi = () => Api.get('/api/product/get_products')
 export const getSingleProductApi = (id) => Api.get(`/api/product/get_product/${id}`)
 
 // Update product API with ID
-export const updateProductApi = (id, formData) => Api.put(`/api/product/update_product/${id}`, formData)
+export const updateProductApi = (id, formData) => Api.put(`/api/product/update_product/${id}`, formData, config)
 
 // delete product API with ID
-export const deleteProductApi = (id) => Api.delete(`/api/product/delete_product/${id}`)
+export const deleteProductApi = (id) => Api.delete(`/api/product/delete_product/${id}`, config)
 
